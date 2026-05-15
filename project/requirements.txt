@@ -1,0 +1,11 @@
+pandas
+numpy
+scikit-learn
+lightgbm
+shap
+fastapi
+uvicorn[standard]
+pyyaml
+joblib
+urllib3==1.26.15
+requests
