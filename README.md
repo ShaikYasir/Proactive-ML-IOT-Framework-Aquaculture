@@ -679,67 +679,6 @@ except Exception as e:
     explanation = FALLBACK_TEMPLATE
 ```
 
----
-
-## Future Improvements
-
-### Short-term (1–3 months)
-
-1. **Automated Testing**
-   - Unit tests for preprocessing, model loading, API validation
-   - Integration tests with mock LLM responses
-   - Target: 80%+ code coverage
-
-2. **Data Drift Detection**
-   - Monitor distribution of incoming pond data
-   - Trigger retraining if drift detected (Kolmogorov-Smirnov test)
-   - Log drift events for audit trail
-
-3. **Model Versioning**
-   - Store multiple model checkpoints with performance metrics
-   - Implement A/B testing endpoint for model comparison
-   - Gradual rollout mechanism
-
-### Medium-term (3–6 months)
-
-4. **Batch Prediction Pipeline**
-   - Process 100s of predictions in parallel (vectorized SHAP)
-   - Export results to CSV/database
-   - Scheduled reports for farm operators
-
-5. **Feedback Loop Integration**
-   - Farmers report actual outcomes (did disease occur?)
-   - Retrain model monthly with new ground truth
-   - Automated performance tracking
-
-6. **Multi-pond Anomaly Detection**
-   - Detect unusual patterns across pond fleet
-   - Identify disease spread patterns or systemic issues
-   - Alert operators to correlated risks
-
-7. **Mobile App Integration**
-   - Push notifications for critical risk levels
-   - Lightweight client for offline predictions (edge model)
-
-### Long-term (6+ months)
-
-8. **Transfer Learning**
-   - Pre-train on large aquaculture datasets (if available)
-   - Fine-tune on farm-specific data for new operators
-   - Reduce cold-start problem
-
-9. **Advanced RL (Deep Q-Learning)**
-   - Continuous action space for finer-grained parameter control
-   - Function approximation (neural network Q-function)
-   - Multi-objective reward balancing
-
-10. **Hardware Optimization**
-    - Quantize model for edge deployment (on-pond IoT devices)
-    - Real-time inference without API dependency
-    - Reduced latency + improved reliability
-
----
-
 ## Lessons Learned
 
 ### Technical Challenges
@@ -800,27 +739,9 @@ This project is licensed under the MIT License. See [LICENSE](LICENSE) file for 
 
 ---
 
-## Contact & Support
 
-For questions, issues, or suggestions:
 
-- **GitHub Issues:** [Open an issue](https://github.com/ShaikYasir/Proactive-ML-IOT-Framework-Aquaculture/issues)
-- **Email:** [Your contact info if desired]
 
----
-
-## Citation
-
-If you use this project in research or production, please cite:
-
-```bibtex
-@software{proactive_ml_aquaculture_2024,
-  title={Proactive ML-IoT Framework for Aquaculture Disease Detection & Optimization},
-  author={Shaik, Yasir},
-  year={2024},
-  url={https://github.com/ShaikYasir/Proactive-ML-IOT-Framework-Aquaculture}
-}
-```
 
 ---
 
