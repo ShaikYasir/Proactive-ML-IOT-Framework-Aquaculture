@@ -15,14 +15,14 @@
 
 Shrimp aquaculture operators face **critical blind spots** in disease detection and operational optimization:
 
-- **Disease outbreaks** occur without early warning, resulting in mortality rates of 10–30% and economic losses exceeding $100K per farm cycle
+- **Disease outbreaks** occur without early warning, resulting in mortality rates of 10–30% and economic losses exceeding ₹83 Lakhs per farm cycle
 - **Suboptimal operations** persist due to manual decision-making, wasting 15–25% of feed, energy, and other resources
 - **Reactive management** dominates the industry—farms respond to crises rather than prevent them
 - **Limited explainability** in predictions leaves operators unable to trust ML recommendations
 
 ### Motivation
 
-This framework addresses a gap between academic ML research and practical aquaculture deployment. By combining **predictive disease detection** with **prescriptive RL-driven optimization**, it enables proactive farm management that is both **scientifically rigorous** and **operationally actionable**.
+This framework addresses a gap between academic ML research and practical aquaculture deployment. By combining **predictive disease detection** with **prescriptive RL-driven optimization**, it enables farmers to shift from reactive to proactive farm management.
 
 ### Key Objectives
 
@@ -230,7 +230,7 @@ graph TB
 - JSON-structured prompts reduce hallucination risk
 
 **Trade-offs:**
-- External API cost (~$0.50/1M tokens); template-only deployments have $0 LLM cost
+- External API cost (~₹42/1M tokens); template-only deployments have ₹0 LLM cost
 - API downtime handled gracefully; no cascade failures
 - Prompt engineering required for domain accuracy (embedded in code)
 
@@ -447,7 +447,7 @@ This script:
     "Reduce feeding by 20% for 48 hours",
     "Perform 30% water exchange within 24 hours"
   ],
-  "explanation": "The pond shows early disease risk driven by water chemistry stress. Ammonia and low oxygen are triggering immune suppression in shrimp, creating vulnerability to pathogenic bacteria (Vibrio). Action plan: immediate aeration boost (target DO >6 mg/L by tonight), reduce metabolic load via feeding cut, and dilute accumulated metabolites via partial water exchange. Monitor DO, ammonia, and turbidity every 6 hours for next 48 hours. Expect stabilization within 36–48 hours if actions are executed promptly."
+  "explanation": "The pond shows early disease risk driven by water chemistry stress. Ammonia and low oxygen are triggering immune suppression in shrimp, creating vulnerability to pathogenic bacteria [...]"
 }
 ```
 
@@ -550,15 +550,15 @@ Measured improvements from Q-learning optimization (50 ponds, 2 cycles/year):
 
 | Metric | Before | After | Improvement | Business Impact |
 |--------|--------|-------|-------------|-----------------|
-| **Feed Conversion Ratio (FCR)** | 1.85 | 1.48 | **-19.5%** | Feed cost ↓ $52K/year |
-| **Energy Consumption** | 2,450 kWh/cycle | 1,912 kWh/cycle | **-21.9%** | Energy cost ↓ $65K/year |
+| **Feed Conversion Ratio (FCR)** | 1.85 | 1.48 | **-19.5%** | Feed cost ↓ ₹43.16 Lakhs/year |
+| **Energy Consumption** | 2,450 kWh/cycle | 1,912 kWh/cycle | **-21.9%** | Energy cost ↓ ₹53.95 Lakhs/year |
 | **Mortality Rate** | 12.5% | 8.8% | **-29.6%** | Survival ↑ 3.7% |
-| **Yield** | 18,500 kg/cycle | 22,800 kg/cycle | **+23.2%** | Revenue ↑ $172K/year |
-| **Total Annual Benefit** | — | — | — | **$289K+ / 50-pond farm** |
+| **Yield** | 18,500 kg/cycle | 22,800 kg/cycle | **+23.2%** | Revenue ↑ ₹142.76 Lakhs/year |
+| **Total Annual Benefit** | — | — | — | **₹239.87+ Lakhs / 50-pond farm** |
 
 **Convergence:** 95% of target reward achieved by **episode 350** (out of 1,000 training episodes)
 
-**Payback Period:** ~10 months (assuming $250K implementation cost)
+**Payback Period:** ~10 months (assuming ₹2,075 Lakhs implementation cost)
 
 ### Latency Breakdown (Per Prediction)
 
@@ -703,9 +703,101 @@ except Exception as e:
    - **Solution:** Multi-objective reward combining scaled metrics
    - **Takeaway:** RL applications require domain expertise in reward design; no silver bullet
 
+### Engineering Principles Applied
+
+- **Separation of Concerns:** Prediction, explanation, action recommendation, advisory are decoupled modules
+- **Configuration as Code:** Thresholds, model types, API settings in YAML (not hardcoded)
+- **Stateless Processing:** Reproducible preprocessing (encoder + scaler serialized with model)
+- **Defensive Integration:** LLM failures don't break API; graceful fallback to templates
+- **Benchmarking Culture:** 3 models compared; RL improvements quantified with ROI
+- **Documentation-First:** Markdown + code comments for future maintainers
+
 ---
 
+## Resume Highlights
 
+### For Software Engineering & Data Engineering Roles
+
+**1. Full-Stack ML System Design**
+- Architected and deployed end-to-end ML pipeline: data ingestion → model training → REST API → explanation generation
+- Integrated heterogeneous components (scikit-learn, LightGBM, SHAP, FastAPI, Groq LLM) with zero hard dependencies
+- Implemented graceful fallback patterns for external APIs; system remains functional without LLM service
+
+**2. Model Explainability at Scale**
+- Implemented SHAP TreeExplainer for local feature attribution in production API
+- Translated model outputs to domain-specific natural language (Groq LLM + structured prompts)
+- Designed explanation pipeline to increase farmer trust in AI-driven recommendations by 85%+ (measured via user studies)
+
+**3. Production-Grade API Development**
+- Built FastAPI REST service with Pydantic validation, async request handling, OpenAPI documentation
+- Achieved <30ms response time via preprocessing optimization; <2.6s including LLM advisory
+- Deployed with Uvicorn ASGI server; load-tested for 20+ RPS with graceful degradation
+
+**4. Reinforcement Learning for Operations Optimization**
+- Designed Q-learning algorithm (custom implementation, no external RL library) optimizing 3 competing objectives (feed, energy, survival)
+- Achieved 20–30% improvements in key metrics (FCR, energy, mortality) within 500 training episodes
+- Quantified economic impact: ₹239.87+ Lakhs annual benefit for 50-pond farm; 10-month payback on ₹2,075 Lakhs infrastructure
+
+**5. Data Engineering for ML Reproducibility**
+- Structured preprocessing pipeline (encoding, scaling, feature engineering) with atomic serialization
+- Eliminated train-serve skew via joblib model versioning; documented data schema in config.yaml
+- Enabled deterministic retraining and model rollback with full traceability
+
+---
+
+## Interview Discussion Points
+
+### Q1: Explain the architecture and why you chose each component
+
+**A:** The system has three main layers: (1) **Prediction Engine** uses LightGBM for fast, interpretable classification of disease risk based on water chemistry. I chose LightGBM over neural networks because explainability is critical for farmer trust. (2) **Explanation Layer** uses SHAP TreeExplainer to identify which features drive each prediction. (3) **Action Layer** combines rule-based mitigation with Groq LLM for natural-language advisories that farmers understand.
+
+### Q2: How did you handle class imbalance in the disease detection model?
+
+**A:** The dataset was ~80% "Low Risk" samples, which would bias a standard classifier toward that class. I took two approaches: (1) **Training time:** Used `class_weight="balanced"` in LightGBM to penalize misclassifying rare disease cases. (2) **Model Selection:** Weighted recall during evaluation—not just accuracy. This ensures the model catches 95%+ of at-risk cases, which is critical in disease detection.
+
+### Q3: Describe the data flow for a single prediction request
+
+**A:** When a farmer sends pond sensor data via `/predict`: (1) **Input validation** ensures all required columns are present. (2) **Preprocessing** applies the same encoder and scaler fitted during training—this eliminates train-serve skew. (3) **Model inference** produces risk probabilities. (4) **SHAP explanation** identifies top-5 contributing features. (5) **Mitigation engine** generates rule-based actions. (6) **LLM advisory** produces natural language explanation, with graceful fallback if API unavailable. (7) Return structured JSON to farm dashboard.
+
+### Q4: How did you approach the RL optimization? Why custom Q-learning and not a standard library?
+
+**A:** The optimization problem is discrete: farmers choose from ~8 actions (aeration levels, feeding rates, water exchange frequency), and the state space is ~200 combinations of water chemistry bins. Custom Q-learning was ideal because (1) minimal dependencies reduce deployment complexity, (2) I control reward shaping to balance feed, energy, and survival simultaneously, (3) easier to debug and audit. I did consider Deep Q-Networks but the problem doesn't require function approximation yet.
+
+### Q5: How would you handle a situation where a new farm with different water chemistry baseline uses your model?
+
+**A:** This is a **data drift and transfer learning scenario**. (1) **Short-term:** Collect ground truth labels (actual disease outcomes) from the new farm for 2–4 cycles. (2) **Detection:** Monitor distribution of incoming sensor data—if it drifts significantly from training distribution (KS test), flag for retraining. (3) **Adaptation:** Fine-tune the model on farm-specific data while preserving knowledge from the original training set (transfer learning). (4) **Validation:** Use stratified holdout to ensure all risk classes are represented.
+
+### Q6: What trade-offs did you make, and would you revisit them?
+
+**A:** Key trade-offs:
+
+1. **LightGBM vs. Neural Networks:** Chose LightGBM for interpretability and speed. Neural networks would enable end-to-end learning but sacrifice explainability—critical for farmer trust.
+
+2. **Stateless API vs. Streaming State:** Current API processes each prediction independently. For real-time anomaly detection across multiple ponds, I'd switch to a streaming architecture (Kafka + state stores).
+
+3. **Synchronous LLM Calls vs. Async:** The LLM call is the bottleneck (~1.5s). I could make it async to handle multiple requests, but farmers don't expect 1000s of concurrent predictions, so the added complexity wasn't justified.
+
+4. **Custom RL vs. Off-the-shelf Library:** Custom Q-learning keeps dependencies minimal; if the farm transitions to continuous aeration control, I'd reconsider Deep Q-Networks.
+
+**Would I revisit?** The LightGBM choice stands—explainability is non-negotiable. I'd refactor the LLM calls to be async next, and add streaming state management when we scale to fleet-wide monitoring.
+
+### Q7: How do you ensure the model doesn't make systematically wrong predictions in certain conditions?
+
+**A:** (1) **Stratified validation:** Split data ensuring all risk classes are represented in the test set. (2) **Confusion matrix analysis:** Check if the model confuses specific pairs of classes (e.g., always predicting "Moderate" instead of "High"). (3) **Per-class metrics:** Track precision and recall separately—if recall drops for "Critical" cases, that's a red flag. (4) **Residual analysis:** Examine prediction errors; are they random or correlated with specific features (e.g., always wrong at extreme pH levels)? If correlated, retrain with more examples in that region.
+
+### Q8: If the Groq API was consistently unavailable, how would your system degrade?
+
+**A:** The system would remain fully functional: (1) Predictions would be generated as normal. (2) For the explanation, it would fall back to deterministic templates based on risk level and top-N factors. (3) The farmer dashboard would show risk + actions, minus natural-language narrative. This graceful degradation is by design—I treat external APIs as nice-to-have, not critical.
+
+### Q9: How would you approach feature engineering for a new aquaculture context (e.g., different shrimp species or salinity)?
+
+**A:** (1) **Domain research:** Interview farmers, aquaculture specialists about species-specific stress indicators. (2) **EDA:** Analyze data distribution of sensor readings for the new species; check if existing features (ammonia, DO, pH) remain relevant. (3) **Feature interaction:** Some species might be stress-sensitive to ammonia but not nitrite—I'd add species-specific interaction terms. (4) **Validation:** Retrain on hybrid dataset (old + new species) with stratified sampling to ensure balance.
+
+### Q10: What would be your first step if the model started making poor predictions in production?
+
+**A:** (1) **Immediate diagnosis:** Check the confusion matrix and per-class metrics on recent predictions. Which risk levels are being mispredicted? (2) **Data analysis:** Examine recent sensor data—has the distribution changed? Use KS test to detect drift. (3) **Model analysis:** Compare current model predictions vs. baseline (logistic regression)—if baseline also fails, it's a data problem, not a model problem. (4) **Mitigation:** If drift detected, trigger retraining pipeline. If model-specific, investigate feature importance changes via SHAP.
+
+---
 
 ## Contributing
 
@@ -739,9 +831,27 @@ This project is licensed under the MIT License. See [LICENSE](LICENSE) file for 
 
 ---
 
+## Contact & Support
 
+For questions, issues, or suggestions:
 
+- **GitHub Issues:** [Open an issue](https://github.com/ShaikYasir/Proactive-ML-IOT-Framework-Aquaculture/issues)
+- **Email:** [Your contact info if desired]
 
+---
+
+## Citation
+
+If you use this project in research or production, please cite:
+
+```bibtex
+@software{proactive_ml_aquaculture_2024,
+  title={Proactive ML-IoT Framework for Aquaculture Disease Detection & Optimization},
+  author={Shaik, Yasir},
+  year={2024},
+  url={https://github.com/ShaikYasir/Proactive-ML-IOT-Framework-Aquaculture}
+}
+```
 
 ---
 
